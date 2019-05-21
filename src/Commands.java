@@ -3,17 +3,8 @@ import java.net.SocketException;
 import java.util.Arrays;
 
 public class Commands extends Thread {
-    God god;
-    {
-        try {
-            god = new God();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-    }
     Commands() {
     }
-
     public static String getPossibleCommands() {
         String mes = Arrays.toString(Command.values());
         return mes;
@@ -26,6 +17,7 @@ public class Commands extends Thread {
         String name = "";
         String path = "";
         while (message.length() <= 0) {
+            System.out.println(line);
             if (line.equals(Command.start.getCom())) {
                 Story.go();
                 message="История запущенна";
@@ -53,9 +45,9 @@ public class Commands extends Thread {
                 message="Тюрьма опустела";
             } else if (line.equals(Command._import.getCom())) {
                 while (path.equals("")) {
-                    god.sendMessage("Укажите адресс файла");
+                    God.sendMessage("Укажите адресс файла");
                     try {
-                        path = god.getResivedMessage();
+                        path = God.getResivedMessage();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -66,17 +58,17 @@ public class Commands extends Thread {
                 Prison.show();
             } else if (line.equals(Command.add.getCom())) {
                 while (name.equals("")) {
-                    god.sendMessage("Введите имя");
+                    God.sendMessage("Введите имя");
                     try {
-                        name = god.getResivedMessage();
+                        name = God.getResivedMessage();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
                 while (number.equals("")) {
-                    god.sendMessage("Присвойте номер");
+                    God.sendMessage("Присвойте номер");
                     try {
-                        number = god.getResivedMessage();
+                        number = God.getResivedMessage();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -87,9 +79,9 @@ public class Commands extends Thread {
                 message="Вы посадили "+ name+". Ему присвоен номер "+number;
             } else if (line.equals(Command.remove.getCom())) {
                 while (name.equals("")) {
-                    god.sendMessage("Введите имя");
+                    God.sendMessage("Введите имя");
                     try {
-                        name = god.getResivedMessage();
+                        name = God.getResivedMessage();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -105,6 +97,7 @@ public class Commands extends Thread {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                message="Неизвестная команда";
             }
         }
         return message;

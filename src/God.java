@@ -10,10 +10,10 @@ public class God extends Thread implements Runnable{
         God server=new God();
         server.start();
     }
-    private DatagramSocket socket;
-    private byte[] buf = new byte[256];
-    private InetAddress address;
-    private int port;
+    private static DatagramSocket socket;
+    private static byte[] buf = new byte[256];
+    private static InetAddress address;
+    private static int port;
     public God() throws SocketException {
         socket = new DatagramSocket(4445);
     }
@@ -33,7 +33,13 @@ public class God extends Thread implements Runnable{
             //packet = new DatagramPacket(buf, buf.length, address, port);
             String received
                     = new String(packet.getData(), 0, packet.getLength());
-            System.out.println(received);
+            Commands command=new Commands();
+            try {
+                sendMessage(command.doCommand(received));
+                received=null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (received.equals("end")) {
                 System.out.println(1);
                 try {
@@ -51,7 +57,7 @@ public class God extends Thread implements Runnable{
         }
         socket.close();
     }
-    String getResivedMessage() throws IOException{
+    public static String getResivedMessage() throws IOException{
         buf=new byte[256];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         String resived="";
@@ -61,11 +67,11 @@ public class God extends Thread implements Runnable{
         }
         return resived;
     }
-
-    void sendMessage(String message) throws IOException {
+    public static void sendMessage(String message) throws IOException {
         buf=message.getBytes();
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
         socket.send(packet);
         buf= new byte[256];
     }
+
 }
