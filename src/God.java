@@ -14,7 +14,7 @@ public class God extends Thread implements Runnable{
     private byte[] buf = new byte[256];
     private InetAddress address;
     private int port;
-    private God() throws SocketException {
+    public God() throws SocketException {
         socket = new DatagramSocket(4445);
     }
     public void run() {
@@ -51,7 +51,7 @@ public class God extends Thread implements Runnable{
         }
         socket.close();
     }
-    private String getResivedMessage() throws IOException{
+    String getResivedMessage() throws IOException{
         buf=new byte[256];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         String resived="";
@@ -62,7 +62,7 @@ public class God extends Thread implements Runnable{
         return resived;
     }
 
-    private void sendMessage(String message) throws IOException {
+    void sendMessage(String message) throws IOException {
         buf=message.getBytes();
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
         socket.send(packet);
