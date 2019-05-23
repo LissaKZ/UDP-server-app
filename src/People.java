@@ -8,7 +8,6 @@ public class People implements Runnable {
     Thread person;
     String role;
     int productivity;
-
     public static final Gson GSON=new GsonBuilder().setPrettyPrinting().create();
 
 
@@ -38,7 +37,7 @@ public class People implements Runnable {
     @Override
     public void run() {
         while (person.isAlive()) {
-            if (true) {
+            if (God.stat) {
                 try {
                     if (!this.role.equals("заключенный")) {
                         if (this.mood <= 40 && Math.random() * 100 >= 60) {

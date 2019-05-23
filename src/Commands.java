@@ -19,7 +19,7 @@ public class Commands extends Thread {
         while (message.length() <= 0) {
             System.out.println(line);
             if (line.equals(Command.start.getCom())) {
-                Story.go();
+                God.go();
                 message="История запущенна";
             } /*else if (line.equals(Command.add_if_min.getCom())) {
                 while (name.equals("")) {
@@ -92,7 +92,7 @@ public class Commands extends Thread {
                 Prison.info();
             } else if (line.equals(Command.stop.getCom())) {
                 try {
-                    Story.end();
+                    God.end();
                     Thread.interrupted();
                 } catch (IOException e) {
                     e.printStackTrace();
