@@ -3,7 +3,7 @@ import com.google.gson.GsonBuilder;
 
 public class People implements Runnable {
     String name;
-    int tern;
+    private int tern;
     int mood;
     Thread person;
     String role;
@@ -20,7 +20,7 @@ public class People implements Runnable {
         System.out.println("person " + this.name + " started");
         person.start();
     }
-    public void die() {
+    private void die() {
         System.out.println(this.name + " не выдержал стресса и покончил с собой");
     }
     public void doYourBusiness() {
