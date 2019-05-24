@@ -8,7 +8,7 @@ public class Prisoner extends People {
     }
     void tryToEscape(){
         if(Math.random()*100<30){
-            Prison.prisoners.remove(person);
+            Prison.remove(this.name);
         }
     }
     @Override

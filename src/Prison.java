@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import java.io.*;
@@ -12,6 +14,8 @@ public class Prison implements Serializable{
     static File file=new File("C:\\Users\\Alissa\\Desktop\\zz.csv");
     static CopyOnWriteArraySet<String> prisoners = new CopyOnWriteArraySet<>();
     static Date date_of_initialization = new Date();
+    public static final Gson GSON=new GsonBuilder().setPrettyPrinting().create();
+
 
     static void add_if_min(String number, String name) {
         Prisoner p = new Prisoner(number, name);
@@ -55,24 +59,29 @@ public class Prison implements Serializable{
             }
     }
 
-    static void show() {
+    static String show() {
         System.out.println(prisoners);
+        return prisoners.toString();
     }
 
-    static void add(String number, String name) {
+    static void add(String name, String number) {
         Prisoner prisoner=new Prisoner(number,name);
-        String json=People.GSON.toJson(prisoner);
+        System.out.println("prison 65");
+        String json=GSON.toJson(prisoner);
+        System.out.println("2");
         prisoners.add(json);
     }
 
-    static void info() {
-        System.out.println("LinkedHashSet; " + date_of_initialization + "; " + prisoners.size() + " elements;");
+    static String info() {
+        return "LinkedHashSet; " + date_of_initialization + "; " + prisoners.size() + " elements;";
     }
 
     static void remove(String name) {
         Iterator<String> iter=prisoners.iterator();
         while (iter.hasNext()){
-            Prisoner prisoner= People.GSON.fromJson(iter.next(),Prisoner.class);
+            System.out.println("3");
+            Prisoner prisoner= GSON.fromJson(iter.next(),Prisoner.class);
+            System.out.println("4");
             if(prisoner.name.equals(name)){
                 iter.remove();
             }
@@ -104,7 +113,9 @@ public class Prison implements Serializable{
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         Iterator<String> iter=prisoners.iterator();
         for(int i=0;i<prisoners.size();i++){
-            Prisoner p= People.GSON.fromJson(iter.next(),Prisoner.class);
+            System.out.println("5");
+            Prisoner p= GSON.fromJson(iter.next(),Prisoner.class);
+            System.out.println("6");
             fileOutputStream.write((p.name+";"+p.number).getBytes());
             fileOutputStream.write(10);
         }

@@ -10,7 +10,7 @@ public class Bird extends Thread{
     public void run() {
         System.out.println("birds " + this.count + " started");
         while (isAlive()) {
-            if (true) {
+            if (God.stat) {
                 fly();
                 try {
                     Thread.sleep(100);
@@ -38,7 +38,7 @@ public class Bird extends Thread{
         System.out.println("Птица выронила плакат");
         Iterator<String> iter=Prison.prisoners.iterator();
         while (iter.hasNext()) {
-            Prisoner prisoner= People.GSON.fromJson(iter.next(),Prisoner.class);
+            Prisoner prisoner= Prison.GSON.fromJson(iter.next(),Prisoner.class);
             if (Math.random() * 100 < 60) {
                 prisoner.tryToEscape();
             }
