@@ -1,4 +1,6 @@
-public class Prisoner extends People {
+import java.io.Serializable;
+
+public class Prisoner extends People implements Serializable {
     String number;
     Prisoner(String number,String name) {
         super(name);

@@ -1,13 +1,12 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class People implements Runnable {
+public class People extends Thread implements Runnable {
     String name;
-    private int tern;
-    int mood;
-    Thread person;
+    private transient int tern;
+    transient int mood;
     String role;
-    int productivity;
+    transient int productivity;
     public static final Gson GSON=new GsonBuilder().setPrettyPrinting().create();
 
 
@@ -16,9 +15,8 @@ public class People implements Runnable {
         this.tern = 1;
         this.mood = 80;
         this.productivity=10;
-        person = new Thread(this, "Создан " + role + " " + name);
         System.out.println("person " + this.name + " started");
-        person.start();
+        this.start();
     }
     private void die() {
         System.out.println(this.name + " не выдержал стресса и покончил с собой");
@@ -36,7 +34,7 @@ public class People implements Runnable {
     }
     @Override
     public void run() {
-        while (person.isAlive()) {
+        while (this.isAlive()) {
             if (God.stat) {
                 try {
                     if (!this.role.equals("заключенный")) {
@@ -62,7 +60,7 @@ public class People implements Runnable {
                         } else if (this.mood <= 20 && Math.random() * 100 >= 30) {
                             System.out.println(this.name + " поссорился с сокамерниками.");
                             Thread.interrupted();
-                            Prison.remove(person.getName());
+                            Prison.remove(this.getName());
                         } else if (this.mood <= 10) {
                             die();
                             Thread.interrupted();

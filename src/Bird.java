@@ -1,6 +1,4 @@
-import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 public class Bird extends Thread{
