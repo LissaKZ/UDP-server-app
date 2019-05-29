@@ -64,9 +64,9 @@ public class Prison implements Serializable{
     }
 
     static void add(String name, String number) {
-        Prisoner prisoner=new Prisoner(number,name);
+        Prisoner prisoner=new Prisoner(name,number);
         System.out.println("prison 65");
-        String json=GSON.toJson(prisoner);
+        String json=GSON.toJson(new Clerk(prisoner));
         System.out.println("2");
         prisoners.add(json);
     }

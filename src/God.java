@@ -80,11 +80,11 @@ public class God extends Thread implements Runnable{
                 sendMessage("Доступные команды: " + Commands.getPossibleCommands());
                 break;
             case "add":
-                Prison.add(getNumber(), getNameOf());
+                Prison.add(getNameOf(), getNumber());
                 comm = Command.add.getCom();
                 break;
             case "add if min":
-                Prison.add_if_min(getNumber(), getNameOf());
+                Prison.add(getNameOf(), getNumber());
                 comm = Command.add_if_min.getCom();
                 break;
             case "show":
