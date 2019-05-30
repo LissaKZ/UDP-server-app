@@ -3,25 +3,40 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.sql.*;
 
 
-public class God extends Thread implements Runnable{
-    public static void main(String[] args) throws SocketException {
-        God server=new God();
-        server.start();
-    }
+public class God extends Thread implements Runnable {
+
     private static DatagramSocket socket;
     private static byte[] buf = new byte[256];
     private static InetAddress address;
     private static int port;
-    static boolean stat=false;
-    public God() throws SocketException {
-        socket = new DatagramSocket(4445);
+    static boolean stat = false;
+    static final String DB_URL = "jdbc:postgresql://127.0.0.1:5432/studs";
+    static final String USER = "username";
+    static final String PASS = "password";
+
+    public static void main(String[] args) throws SocketException, SQLException {
+        God server = new God();
+        server.start();
     }
+
+    public void DB(){
+
+    }
+
+    public God() throws SocketException, SQLException {
+        socket = new DatagramSocket(4445);
+        Connection connection= DriverManager.getConnection(DB_URL,USER,PASS);
+        Statement statement=connection.createStatement();
+        ResultSet result=statement.executeQuery("SELECT * FROM studs");
+    }
+
     public void run() {
         boolean running = true;
         while (running) {
-            buf=new byte[256];
+            buf = new byte[256];
             DatagramPacket packet
                     = new DatagramPacket(buf, buf.length);
             try {
@@ -35,7 +50,7 @@ public class God extends Thread implements Runnable{
             String received
                     = new String(packet.getData(), 0, packet.getLength());
             try {
-               doCommand(received);
+                doCommand(received);
             } catch (IOException e) {
                 System.out.println("Не удалось выполнить команду");
             }
@@ -47,7 +62,7 @@ public class God extends Thread implements Runnable{
                     e.printStackTrace();
                 }
                 try {
-                    System.out.println("Rs mes: "+getResivedMessage());
+                    System.out.println("Rs mes: " + getResivedMessage());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -56,22 +71,25 @@ public class God extends Thread implements Runnable{
         }
         socket.close();
     }
-    public static String getResivedMessage() throws IOException{
-        buf=new byte[256];
+
+    public static String getResivedMessage() throws IOException {
+        buf = new byte[256];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
-        String resived="";
-        while (resived.equals("")){
+        String resived = "";
+        while (resived.equals("")) {
             socket.receive(packet);
-            resived= new String(packet.getData(), 0, packet.getLength());
+            resived = new String(packet.getData(), 0, packet.getLength());
         }
         return resived;
     }
+
     public static void sendMessage(String message) throws IOException {
-        buf=message.getBytes();
+        buf = message.getBytes();
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
         socket.send(packet);
-        buf= new byte[256];
+        buf = new byte[256];
     }
+
     public String doCommand(String command) throws IOException {
         String comm;
         switch (command) {
@@ -122,7 +140,8 @@ public class God extends Thread implements Runnable{
         }
         return comm;
     }
-    public String getNameOf(){
+
+    public String getNameOf() {
         String name = "";
         try {
             sendMessage("Введите имя");
@@ -156,8 +175,9 @@ public class God extends Thread implements Runnable{
         }
         return path;
     }
+
     public static void go() {
-        stat=true;
+        stat = true;
         System.out.println("GO");
     }
 
